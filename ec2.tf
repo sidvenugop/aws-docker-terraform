@@ -12,16 +12,21 @@ resource "aws_instance" "dh-datapipeline" {
     # the Public SSH key
     key_name = "${aws_key_pair.dunhumby-key-pair.id}"
 
-    # nginx installation
+    # Script Copy
     provisioner "file" {
         source = "docker.sh"
         destination = "/tmp/docker.sh"
     }
+    
+    provisioner "file" {
+        source = "init.sh"
+        destination = "/tmp/init.sh"
+    }
 
     provisioner "remote-exec" {
         inline = [
-            "chmod +x /tmp/docker.sh",
-            "sudo /tmp/docker.sh"
+            "chmod +x /tmp/init.sh",
+            "sudo /tmp/init.sh"
         ]
     }
 
